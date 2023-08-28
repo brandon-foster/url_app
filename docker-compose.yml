@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  traefik:
+    image: "traefik:v2.9"
+    container_name: "traefik"
+    command:
+#      - "--log.level=DEBUG"
+#      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:3380"
+    ports:
+      - "3380:3380"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  url_ui:
+    container_name: url_ui
+    build:
+      context: ./url_ui
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.url-ui-router.entrypoints=web"
+      - "traefik.http.routers.url-ui-router.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.url-ui-router.service=url-ui-service"
+      - "traefik.http.services.url-ui-service.loadbalancer.server.port=3333"
+  url_service:
+    container_name: url_service
+    build:
+      context: ./url_service
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.http.routers.url-service-router.entrypoints=web"
+      - "traefik.http.routers.url-service-router.rule=(PathPrefix(`/api/shorturl`))"
+      - "traefik.http.routers.url-service-router.service=url-service-service"
+      - "traefik.http.services.url-service-service.loadbalancer.server.port=8080"

@@ -1,0 +1,6 @@
+[submodule "url_service"]
+	path = url_service
+	url = git@bitbucket.org:brandon-foster/url_service.git
+[submodule "url_ui"]
+	path = url_ui
+	url = git@bitbucket.org:brandon-foster/url_ui.git
