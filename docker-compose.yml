@@ -29,6 +29,6 @@ services:
       dockerfile: Dockerfile
     labels:
       - "traefik.http.routers.url-service-router.entrypoints=web"
-      - "traefik.http.routers.url-service-router.rule=(PathPrefix(`/api/shorturl`) || PathPrefix(`/l`))"
+      - "traefik.http.routers.url-service-router.rule=(PathPrefix(`/l`))"
       - "traefik.http.routers.url-service-router.service=url-service-service"
       - "traefik.http.services.url-service-service.loadbalancer.server.port=8080"
